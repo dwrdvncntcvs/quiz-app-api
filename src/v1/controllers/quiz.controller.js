@@ -1,11 +1,17 @@
 const { create, findAll } = require("../models/Quiz");
 
 const createQuiz = async (req, res) => {
-  const { author, title, description, tag } = req.body;
+  const { title, description, tag } = req.body;
+  const { first_name, last_name } = req.auth_user;
+  const author = `${first_name} ${last_name}`;
 
-  const data = await create({ author, title, description, tag });
+  try {
+    const data = await create({ author, title, description, tag });
 
-  return res.status(201).send(data);
+    return res.status(201).send(data);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const findAllQuiz = async (req, res) => {
