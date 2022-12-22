@@ -24,27 +24,16 @@ const createUser = async (req, res, next) => {
   }
 };
 
-const authUser = async (req, res, next) => {
-  const { username, password } = req.body;
+const authUser = async (req, res) => {
+  const { id, username, first_name, last_name } = req.user;
 
-  const data = await findUserByUsername(username);
+  const payload = {
+    id,
+    username,
+    name: `${first_name} ${last_name}`,
+  };
 
-  if (!data)
-    return res.status(403).send({ msg: "Invalid Username or Password" });
-
-  const isPasswordValid = await comparePassword(data.password, password);
-
-  if (!isPasswordValid)
-    return res.status(403).send({ msg: "Invalid Username or Password" });
-
-  const token = sign(
-    {
-      id: data.id,
-      username: data.username,
-      name: `${data.first_name} ${data.last_name}`,
-    },
-    SECRET_KEY
-  );
+  const token = sign(payload, SECRET_KEY);
 
   return res.status(200).send({ token });
 };
