@@ -1,8 +1,12 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+
+const DB_URL = process.env.MONGO_DB_URL;
 mongoose
-  .connect("mongodb://localhost:27017/quiz_db")
+  .connect(DB_URL)
   .then(() => console.log("Connected"))
   .catch((e) => console.log(e.message));
 
