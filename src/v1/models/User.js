@@ -16,6 +16,11 @@ userSchema.pre("save", async function (data) {
   this.password = hashedPassword;
 });
 
+userSchema.post("find", async function (data) {
+  delete data.password;
+  return data;
+});
+
 const User = model("User", userSchema);
 
 const create = async (userData) => {
@@ -30,7 +35,7 @@ const findUserByUsername = async (username) => {
 const findUserById = async (id) => {
   const data = await User.findById(id);
 
-  return removeExtraDetails(data);
+  return data;
 };
 
 const comparePassword = async (password, enteredPassword) => {
@@ -40,7 +45,6 @@ const comparePassword = async (password, enteredPassword) => {
 const hashPassword = async (password) => {
   const salt = await genSalt(10, "a");
   const hashedPassword = await hash(password, salt);
-  console.log(hashedPassword);
   return hashedPassword;
 };
 

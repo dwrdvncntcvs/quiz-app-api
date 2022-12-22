@@ -1,17 +1,17 @@
-const { Schema, model } = require("mongoose");
-const { cleanData } = require("../../utils/helpers");
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const quizSchema = new Schema({
   author: String,
   title: String,
   description: String,
   tag: String,
+  userId: String,
 });
 
 const Quiz = model("Quiz", quizSchema);
 
-const create = async ({ author, title, description, tag }) => {
-  const data = await Quiz.create({ author, title, description, tag });
+const create = async ({ author, title, description, tag, userId }) => {
+  const data = await Quiz.create({ author, title, description, tag, userId });
 
   return data;
 };
