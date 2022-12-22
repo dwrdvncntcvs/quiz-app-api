@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/v1", require("./v1/index"));
+app.use("/api/v1", require("./v1/"));
 
 app.use((err, req, res, next) => {
   return res.status(500).send({ msg: err.message });
