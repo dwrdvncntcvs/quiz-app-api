@@ -24,7 +24,7 @@ const create = async (userData) => {
 
 const findUserByUsername = async (username) => {
   const data = await User.findOne({ username });
-  return removeExtraDetails(data);
+  return data ? removeExtraDetails(data) : null;
 };
 
 const comparePassword = async (password, enteredPassword) => {
