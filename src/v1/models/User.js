@@ -27,6 +27,12 @@ const findUserByUsername = async (username) => {
   return data ? removeExtraDetails(data) : null;
 };
 
+const findUserById = async (id) => {
+  const data = await User.findById(id);
+
+  return removeExtraDetails(data);
+};
+
 const comparePassword = async (password, enteredPassword) => {
   return await compare(enteredPassword, password);
 };
@@ -38,4 +44,10 @@ const hashPassword = async (password) => {
   return hashedPassword;
 };
 
-module.exports = { User, create, findUserByUsername, comparePassword };
+module.exports = {
+  User,
+  create,
+  findUserByUsername,
+  comparePassword,
+  findUserById,
+};

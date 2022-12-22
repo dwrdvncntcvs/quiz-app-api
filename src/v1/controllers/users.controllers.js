@@ -1,8 +1,4 @@
-const {
-  create,
-  findUserByUsername,
-  comparePassword,
-} = require("../models/User");
+const { create } = require("../models/User");
 
 const { sign } = require("jsonwebtoken");
 const { SECRET_KEY } = require("../../utils/variables");
@@ -25,12 +21,13 @@ const createUser = async (req, res, next) => {
 };
 
 const authUser = async (req, res) => {
-  const { id, username, first_name, last_name } = req.user;
+  const { id, username, first_name, last_name, role } = req.user;
 
   const payload = {
     id,
     username,
     name: `${first_name} ${last_name}`,
+    role,
   };
 
   const token = sign(payload, SECRET_KEY);
