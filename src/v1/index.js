@@ -1,9 +1,8 @@
 const express = require("express");
+const { quiz } = require("./routes");
 
 const routes = express.Router();
 
-routes.get("/", (req, res) => {
-  res.status(200).send("Hello World");
-});
+routes.use("/quizzes", quiz);
 
 module.exports = routes;
