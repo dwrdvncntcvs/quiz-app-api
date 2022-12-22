@@ -6,6 +6,11 @@ const {
   findUserById,
 } = require("../models/User");
 
+const USER_ROLE = {
+  QUIZZER: 1,
+  QUIZEE: 2,
+};
+
 const validateUser = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -42,7 +47,17 @@ const authorizeUser = async (req, res, next) => {
   });
 };
 
+const validateRole = (role) => (req, res, next) => {
+  const { role: userRole } = req.auth_user;
+
+  if (userRole !== role) return res.status(403).send({ msg: "Access denied." });
+
+  next();
+};
+
 module.exports = {
   validateUser,
+  validateRole,
   authorizeUser,
+  USER_ROLE,
 };

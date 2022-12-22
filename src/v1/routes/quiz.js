@@ -1,14 +1,15 @@
 const express = require("express");
 const { createQuiz, findAllQuiz } = require("../controllers/quiz.controller");
 const {
-  validateUser,
   authorizeUser,
+  validateRole,
+  USER_ROLE,
 } = require("../middlewares/user.middlewares");
 
 const routes = express.Router();
 
-routes.post("/", createQuiz);
+routes.post("/", [authorizeUser, validateRole(USER_ROLE.QUIZZER)], createQuiz);
 
-routes.get("/", [authorizeUser], findAllQuiz);
+routes.get("/", [authorizeUser, validateRole(USER_ROLE.QUIZEE)], findAllQuiz);
 
 module.exports = routes;
