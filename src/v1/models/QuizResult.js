@@ -7,6 +7,7 @@ const quizResultSchema = new Schema({
   percentage: Number,
   date: Date,
   quizTitle: String,
+  userId: String,
 });
 
 const QuizResult = model("QuizResult", quizResultSchema);
@@ -18,6 +19,7 @@ const create = async ({
   date,
   quizTitle,
   percentage,
+  userId,
 }) => {
   const data = await QuizResult.create({
     quizId,
@@ -26,6 +28,7 @@ const create = async ({
     date,
     percentage,
     quizTitle,
+    userId,
   });
 
   return data;
