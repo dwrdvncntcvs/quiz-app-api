@@ -9,9 +9,9 @@ const createQuestions = async (req, res) => {
 };
 
 const getQuestionByQuizId = async (req, res) => {
-  const { quizId } = req.params;
+  const { _id } = req.quizData;
 
-  const data = await findByQuizId(quizId);
+  const data = await findByQuizId(_id);
 
   return res.status(200).send(data);
 };

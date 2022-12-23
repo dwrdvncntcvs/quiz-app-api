@@ -16,6 +16,12 @@ const create = async ({ author, title, description, tag, userId }) => {
   return data;
 };
 
+const findById = async (quizId) => {
+  const data = await Quiz.findById(quizId);
+
+  return data;
+};
+
 const findAll = async (queries) => {
   const q = createQueries(queries);
 
@@ -28,6 +34,7 @@ module.exports = {
   Quiz,
   create,
   findAll,
+  findById,
 };
 
 const createQueries = (queryObj) => {
