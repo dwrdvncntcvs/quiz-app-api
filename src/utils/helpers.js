@@ -6,6 +6,11 @@ function removeExtraDetails(model) {
   return m;
 }
 
+const calculatePercentage = (score, totalItems) => {
+  return ((score / totalItems) * 100).toFixed(2);
+};
+
 module.exports = {
   removeExtraDetails,
+  calculatePercentage,
 };

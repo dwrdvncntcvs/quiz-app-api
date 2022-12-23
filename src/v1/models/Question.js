@@ -20,8 +20,15 @@ const findByQuizId = async (quizId) => {
   return data;
 };
 
+const getTotalItems = async (quizId) => {
+  const data = await Question.count({ quizId });
+
+  return data;
+};
+
 module.exports = {
   Question,
   create,
   findByQuizId,
+  getTotalItems,
 };
