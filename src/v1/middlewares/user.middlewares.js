@@ -9,6 +9,7 @@ const {
 const USER_ROLE = {
   QUIZZER: 1,
   QUIZEE: 2,
+  BOTH: 3,
 };
 
 const validateUser = async (req, res, next) => {
@@ -47,13 +48,18 @@ const authorizeUser = async (req, res, next) => {
   });
 };
 
-const validateRole = (role) => (req, res, next) => {
-  const { role: userRole } = req.auth_user;
+const validateRole =
+  (role = USER_ROLE.BOTH) =>
+  (req, res, next) => {
+    const { role: userRole } = req.auth_user;
 
-  if (userRole !== role) return res.status(403).send({ msg: "Access denied." });
+    if (USER_ROLE.BOTH === role) return next();
 
-  next();
-};
+    if (userRole !== role)
+      return res.status(403).send({ msg: "Access denied." });
+
+    next();
+  };
 
 module.exports = {
   validateUser,

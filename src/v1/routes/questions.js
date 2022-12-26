@@ -13,7 +13,7 @@ const {
 const routes = express.Router();
 
 routes.post(
-  "/",
+  "/:quizId",
   [authorizeUser, validateRole(USER_ROLE.QUIZZER)],
   createQuestions
 );

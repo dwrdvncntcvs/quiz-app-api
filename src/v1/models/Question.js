@@ -8,8 +8,9 @@ const questionSchema = new Schema({
 
 const Question = model("Question", questionSchema);
 
-const create = async (questionArr = []) => {
-  const data = await Question.insertMany(questionArr);
+const create = async (questionArr = [], quizId) => {
+  const questionData = questionArr.map((question) => ({ ...question, quizId }));
+  const data = await Question.insertMany(questionData);
 
   return data;
 };
