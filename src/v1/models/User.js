@@ -6,13 +6,16 @@ const { userValidators } = require("../../utils/validators");
 const userSchema = new Schema({
   first_name: String,
   last_name: String,
-  username: String,
+  username: {
+    type: String,
+    unique: true,
+  },
   password: String,
   role: Number,
   createdAt: String,
 });
 
-userSchema.pre("save", async function (data) {
+userSchema.pre("save", async function () {
   const hashedPassword = await hashPassword(this.password);
   this.password = hashedPassword;
 });

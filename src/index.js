@@ -15,7 +15,7 @@ app.use(express.json());
 app.use("/api/v1", require("./v1/"));
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.log(err.message);
   return res.status(500).send({ msg: err.message });
 });
 
