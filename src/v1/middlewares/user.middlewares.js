@@ -4,12 +4,26 @@ const {
   comparePassword,
   findUserByUsername,
   findUserById,
+  isUserInputsValid,
 } = require("../models/User");
 
 const USER_ROLE = {
   QUIZZER: 1,
   QUIZEE: 2,
   BOTH: 3,
+};
+
+const validateRawUser = (req, res, next) => {
+  const inputData = req.body;
+  const validationObj = isUserInputsValid(inputData);
+  const returnObj = {};
+
+  for (let key in validationObj)
+    if (validationObj[key] !== true) returnObj[key] = validationObj[key];
+
+  if (Object.keys(returnObj).length > 0) return res.status(400).send(returnObj);
+
+  next();
 };
 
 const validateUser = async (req, res, next) => {
@@ -36,9 +50,7 @@ const authorizeUser = async (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "");
   verify(token, SECRET_KEY, async (err, data) => {
-    if (err) {
-      return res.status(err).send({ msg: "Sign in first" });
-    }
+    if (err) return res.status(err).send({ msg: "Sign in first" });
 
     const { id } = data;
     const userData = await findUserById(id);
@@ -66,4 +78,5 @@ module.exports = {
   validateRole,
   authorizeUser,
   USER_ROLE,
+  validateRawUser,
 };
