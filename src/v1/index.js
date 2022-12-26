@@ -6,6 +6,6 @@ const routes = express.Router();
 routes.use("/quizzes", quiz);
 routes.use("/users", users);
 routes.use("/questions", questions);
-routes.use("/quizResult", quizResult);
+routes.use("/quizResults", quizResult);
 
 module.exports = routes;
