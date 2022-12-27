@@ -1,5 +1,6 @@
 const express = require("express");
 const { createQuiz, findAllQuiz } = require("../controllers/quiz.controller");
+const { validateQuiz } = require("../middlewares/quiz.middlewares");
 const {
   authorizeUser,
   validateRole,
@@ -8,7 +9,11 @@ const {
 
 const routes = express.Router();
 
-routes.post("/", [authorizeUser, validateRole(USER_ROLE.QUIZZER)], createQuiz);
+routes.post(
+  "/",
+  [authorizeUser, validateRole(USER_ROLE.QUIZZER), validateQuiz],
+  createQuiz
+);
 
 routes.get("/", [authorizeUser, validateRole()], findAllQuiz);
 

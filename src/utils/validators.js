@@ -33,3 +33,34 @@ exports.userValidators = {
     return true;
   },
 };
+
+const MIN_TITlE = 5;
+const MIN_DESC = 20;
+const MIN_TAG = 5;
+
+exports.quizValidator = {
+  validateTitle: (title = "") => {
+    if (title.trim() === "") return "Title is required";
+
+    if (title.length < MIN_TITlE)
+      return `Title must be at least ${MIN_TITlE} or more characters`;
+
+    return true;
+  },
+  validateDescription: (description = "") => {
+    if (description.trim() === "") return "Description is required";
+
+    if (description.length < MIN_DESC)
+      return `Description must be at least ${MIN_DESC} or more characters`;
+
+    return true;
+  },
+  validateTag: (tag = "") => {
+    if (tag.trim() === "") return "Tag is required";
+
+    if (tag.length < MIN_TAG)
+      return `Tag must be at least ${MIN_TAG} or more characters`;
+
+    return true;
+  },
+};

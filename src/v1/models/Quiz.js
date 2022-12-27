@@ -1,4 +1,5 @@
 const { Schema, model, default: mongoose } = require("mongoose");
+const { quizValidator } = require("../../utils/validators");
 
 const quizSchema = new Schema({
   author: String,
@@ -30,11 +31,38 @@ const findAll = async (queries) => {
   return data;
 };
 
+const isQuizInputValid = (quizData = {}) => {
+  const responseData = {};
+
+  for (let key in quizData) {
+    const data = quizData[key];
+
+    switch (key) {
+      case "title":
+        responseData[key] = quizValidator.validateTitle(data);
+        break;
+      case "description":
+        responseData[key] = quizValidator.validateDescription(data);
+        break;
+      case "tag":
+        responseData[key] = quizValidator.validateTag(data);
+        break;
+      default:
+        throw new Error(
+          `${key.toUpperCase()} is not a valid input for quiz fields`
+        );
+    }
+  }
+
+  return responseData;
+};
+
 module.exports = {
   Quiz,
   create,
   findAll,
   findById,
+  isQuizInputValid,
 };
 
 const createQueries = (queryObj) => {
