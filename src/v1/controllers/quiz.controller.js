@@ -8,20 +8,13 @@ const createQuiz = async (req, res, next) => {
   const author = `${first_name} ${last_name}`;
 
   try {
-    const data = {
+    const data = await create({
+      author,
       title,
       description,
       tag,
-      author,
-      _id,
-    };
-    // const data = await create({
-    //   author,
-    //   title,
-    //   description,
-    //   tag,
-    //   userId: _id,
-    // });
+      userId: _id,
+    });
 
     return res.status(201).send(data);
   } catch (err) {
