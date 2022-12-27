@@ -5,9 +5,10 @@ const { create } = require("../models/QuizResult");
 const createQuizResult = async (req, res) => {
   const { score } = req.body;
   const { _id: quizId, title } = req.quizData;
-  const { _id: userId } = req.auth_user;
+  const { _id: userId, first_name, last_name } = req.auth_user;
   const totalItems = await getTotalItems(quizId);
   const percentage = calculatePercentage(score, totalItems);
+  const name = `${first_name} ${last_name}`;
 
   const data = await create({
     quizId,
@@ -17,7 +18,10 @@ const createQuizResult = async (req, res) => {
     date: new Date(),
     quizTitle: title,
     userId,
+    name,
   });
+
+  console.log("Data: ", data);
 
   return res.status(200).send({ data });
 };
