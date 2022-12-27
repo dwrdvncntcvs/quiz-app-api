@@ -1,6 +1,14 @@
 const express = require("express");
-const { createQuiz, findAllQuiz } = require("../controllers/quiz.controller");
-const { validateQuiz } = require("../middlewares/quiz.middlewares");
+const {
+  createQuiz,
+  findAllQuiz,
+  updateQuiz,
+  removeQuiz,
+} = require("../controllers/quiz.controller");
+const {
+  validateQuiz,
+  checkQuizExistence,
+} = require("../middlewares/quiz.middlewares");
 const {
   authorizeUser,
   validateRole,
@@ -16,5 +24,22 @@ routes.post(
 );
 
 routes.get("/", [authorizeUser, validateRole()], findAllQuiz);
+
+routes.put(
+  "/:quizId",
+  [
+    authorizeUser,
+    validateRole(USER_ROLE.QUIZZER),
+    checkQuizExistence,
+    validateQuiz,
+  ],
+  updateQuiz
+);
+
+routes.delete(
+  "/:quizId",
+  [authorizeUser, validateRole(USER_ROLE.QUIZZER), checkQuizExistence],
+  removeQuiz
+);
 
 module.exports = routes;

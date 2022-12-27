@@ -27,9 +27,15 @@ const getTotalItems = async (quizId) => {
   return data;
 };
 
+const deleteManyQuestion = async (quizId) => {
+  const data = await Question.deleteMany({ quizId });
+  return data;
+};
+
 module.exports = {
   Question,
   create,
   findByQuizId,
   getTotalItems,
+  deleteManyQuestion,
 };

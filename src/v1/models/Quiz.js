@@ -1,5 +1,6 @@
 const { Schema, model, default: mongoose } = require("mongoose");
 const { quizValidator } = require("../../utils/validators");
+const { deleteManyQuestion } = require("./Question");
 
 const quizSchema = new Schema({
   author: String,
@@ -27,6 +28,22 @@ const findAll = async (queries) => {
   const q = createQueries(queries);
 
   const data = await Quiz.find(q);
+
+  return data;
+};
+
+const update = async ({ title, description, tag }, quizId) => {
+  const data = await Quiz.updateOne(
+    { _id: quizId },
+    { title, description, tag }
+  );
+
+  return data;
+};
+
+const deleteQuiz = async (quizId = "") => {
+  const data = await Quiz.deleteOne({ _id: quizId });
+  await deleteManyQuestion(quizId);
 
   return data;
 };
@@ -61,6 +78,8 @@ module.exports = {
   Quiz,
   create,
   findAll,
+  update,
+  deleteQuiz,
   findById,
   isQuizInputValid,
 };

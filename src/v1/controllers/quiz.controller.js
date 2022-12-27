@@ -1,4 +1,4 @@
-const { create, findAll } = require("../models/Quiz");
+const { create, findAll, update, deleteQuiz } = require("../models/Quiz");
 
 const createQuiz = async (req, res, next) => {
   const user = req.auth_user;
@@ -35,7 +35,37 @@ const findAllQuiz = async (req, res, next) => {
   }
 };
 
+const updateQuiz = async (req, res, next) => {
+  const { quizId } = req.params;
+  const { title, description, tag } = req.body;
+
+  try {
+    const data = await update({ title, description, tag }, quizId);
+
+    return res
+      .status(201)
+      .send({ meta: data, message: `Quiz ${quizId} updated` });
+  } catch (err) {
+    console.log(err.message);
+    next(err);
+  }
+};
+
+const removeQuiz = async (req, res, next) => {
+  const { quizId } = req.params;
+
+  try {
+    const data = await deleteQuiz(quizId);
+
+    return res.status(200).send(data);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createQuiz,
   findAllQuiz,
+  updateQuiz,
+  removeQuiz,
 };
