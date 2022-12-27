@@ -13,7 +13,7 @@ const USER_ROLE = {
   BOTH: 3,
 };
 
-const validateRawUser = (req, res, next) => {
+const validateUser = (req, res, next) => {
   const inputData = req.body;
   const validationObj = isUserInputsValid(inputData);
   const returnObj = {};
@@ -26,7 +26,7 @@ const validateRawUser = (req, res, next) => {
   next();
 };
 
-const validateUser = async (req, res, next) => {
+const validateAuth = async (req, res, next) => {
   const { username, password } = req.body;
 
   const data = await findUserByUsername(username);
@@ -74,9 +74,9 @@ const validateRole =
   };
 
 module.exports = {
-  validateUser,
+  validateAuth,
   validateRole,
   authorizeUser,
   USER_ROLE,
-  validateRawUser,
+  validateUser,
 };
