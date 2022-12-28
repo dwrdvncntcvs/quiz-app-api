@@ -11,4 +11,15 @@ const handleValidationError = (errorMessage = "", statusCode) => {
   return { statusCode, errorMessages: errorObject };
 };
 
-module.exports = { handleValidationError };
+const createQueries = (queryObj) => {
+  let newQuery = {};
+
+  for (let key in queryObj) {
+    const reg = new RegExp(`${queryObj[key]}`, "i");
+    newQuery[key] = reg;
+  }
+
+  return newQuery;
+};
+
+module.exports = { handleValidationError, createQueries };

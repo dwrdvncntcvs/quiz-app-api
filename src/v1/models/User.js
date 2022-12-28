@@ -1,7 +1,6 @@
 const { hash, genSalt, compare } = require("bcrypt");
 const { Schema, model } = require("mongoose");
 const { removeExtraDetails } = require("../../utils/helpers");
-const { userValidators } = require("../../utils/validators");
 
 const userSchema = new Schema({
   first_name: {
@@ -78,39 +77,10 @@ const hashPassword = async (password) => {
   return hashedPassword;
 };
 
-// const isUserInputsValid = (userData = {}) => {
-//   const validatedObject = {};
-
-//   for (const key in userData) {
-//     switch (key) {
-//       case "username":
-//         validatedObject[key] = userValidators.validateUsername(userData[key]);
-//         break;
-//       case "password":
-//         validatedObject[key] = userValidators.validatePassword(userData[key]);
-//         break;
-//       case "first_name":
-//         validatedObject[key] = userValidators.validateFirstName(userData[key]);
-//         break;
-//       case "last_name":
-//         validatedObject[key] = userValidators.validateLastName(userData[key]);
-//         break;
-//       case "role":
-//         validatedObject[key] = userValidators.validateRole(userData[key]);
-//         break;
-//       default:
-//         throw new Error(`${key.toUpperCase()} is out of scope of user input`);
-//     }
-//   }
-
-//   return validatedObject;
-// };
-
 module.exports = {
   User,
   create,
   findUserByUsername,
   comparePassword,
   findUserById,
-  // isUserInputsValid,
 };

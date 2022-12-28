@@ -1,5 +1,5 @@
 const { isValidObjectId } = require("mongoose");
-const { findById, isQuizInputValid } = require("../models/Quiz");
+const { findById } = require("../models/Quiz");
 
 const checkQuizExistence = async (req, res, next) => {
   const { quizId } = req.params;
@@ -16,21 +16,6 @@ const checkQuizExistence = async (req, res, next) => {
   next();
 };
 
-const validateQuiz = (req, res, next) => {
-  const quizData = req.body;
-
-  const validationObj = isQuizInputValid(quizData);
-  const returnObj = {};
-
-  for (let key in validationObj)
-    if (validationObj[key] !== true) returnObj[key] = validationObj[key];
-
-  if (Object.keys(returnObj).length > 0) return res.status(400).send(returnObj);
-
-  next();
-};
-
 module.exports = {
   checkQuizExistence,
-  validateQuiz,
 };
