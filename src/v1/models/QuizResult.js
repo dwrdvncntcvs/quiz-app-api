@@ -37,4 +37,10 @@ const create = async ({
   return data;
 };
 
-module.exports = { QuizResult, create };
+const findAllByUserId = async (userId) => {
+  const data = await QuizResult.find({ userId });
+
+  return data;
+};
+
+module.exports = { QuizResult, create, findAllByUserId };

@@ -1,6 +1,6 @@
 const { calculatePercentage } = require("../../utils/helpers");
 const { getTotalItems } = require("../models/Question");
-const { create } = require("../models/QuizResult");
+const { create, findAllByUserId } = require("../models/QuizResult");
 
 const createQuizResult = async (req, res) => {
   const { score } = req.body;
@@ -21,11 +21,18 @@ const createQuizResult = async (req, res) => {
     name,
   });
 
-  console.log("Data: ", data);
-
   return res.status(200).send({ data });
+};
+
+const getAllUserQuizResults = async (req, res) => {
+  const { userId } = req.params;
+
+  const data = await findAllByUserId(userId);
+
+  return res.status(200).send(data);
 };
 
 module.exports = {
   createQuizResult,
+  getAllUserQuizResults,
 };

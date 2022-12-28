@@ -1,4 +1,5 @@
 const { verify } = require("jsonwebtoken");
+const { isValidObjectId } = require("mongoose");
 const { SECRET_KEY } = require("../../utils/variables");
 const {
   comparePassword,
@@ -73,10 +74,24 @@ const validateRole =
     next();
   };
 
+const checkUserExistence = async (req, res, next) => {
+  const { userId } = req.params;
+
+  if (!isValidObjectId(userId))
+    return res.status(404).send({ message: "User not found" });
+
+  const foundUser = await findUserById(userId);
+
+  if (!foundUser) return res.status(404).send({ message: "User not found" });
+
+  next();
+};
+
 module.exports = {
   validateAuth,
   validateRole,
   authorizeUser,
   USER_ROLE,
   validateUser,
+  checkUserExistence,
 };
