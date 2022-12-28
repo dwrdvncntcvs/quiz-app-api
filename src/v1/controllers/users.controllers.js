@@ -2,6 +2,7 @@ const { create } = require("../models/User");
 
 const { sign } = require("jsonwebtoken");
 const { SECRET_KEY } = require("../../utils/variables");
+const { handleValidationError } = require("../../utils/mongoDbExtra");
 
 const createUser = async (req, res, next) => {
   const { username, password, first_name, last_name, role } = req.body;
@@ -16,7 +17,12 @@ const createUser = async (req, res, next) => {
     });
     return res.status(201).send(data);
   } catch (err) {
-    next(err);
+    console.log(err.message);
+    const { errorMessages, statusCode } = handleValidationError(
+      err.message,
+      400
+    );
+    return res.status(statusCode).send(errorMessages);
   }
 };
 

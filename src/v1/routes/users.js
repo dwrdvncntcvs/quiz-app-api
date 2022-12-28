@@ -7,7 +7,7 @@ const {
 
 const routes = express.Router();
 
-routes.post("/", [validateUser], createUser);
+routes.post("/", createUser);
 
 routes.post("/auth", [validateAuth], authUser);
 
