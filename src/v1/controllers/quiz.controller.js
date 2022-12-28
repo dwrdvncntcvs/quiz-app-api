@@ -1,3 +1,4 @@
+const { handleValidationError } = require("../../utils/mongoDbExtra");
 const { create, findAll, update, deleteQuiz } = require("../models/Quiz");
 
 const createQuiz = async (req, res, next) => {
@@ -18,7 +19,13 @@ const createQuiz = async (req, res, next) => {
 
     return res.status(201).send(data);
   } catch (err) {
-    next(err);
+    const { errorMessages, statusCode } = handleValidationError(
+      err.message,
+      400
+    );
+
+    return res.status(statusCode).send(errorMessages);
+    // next(err);
   }
 };
 
@@ -46,8 +53,13 @@ const updateQuiz = async (req, res, next) => {
       .status(201)
       .send({ meta: data, message: `Quiz ${quizId} updated` });
   } catch (err) {
-    console.log(err.message);
-    next(err);
+    const { errorMessages, statusCode } = handleValidationError(
+      err.message,
+      400
+    );
+
+    return res.status(statusCode).send(errorMessages);
+    // next(err);
   }
 };
 

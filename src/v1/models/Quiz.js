@@ -2,11 +2,39 @@ const { Schema, model, default: mongoose } = require("mongoose");
 const { quizValidator } = require("../../utils/validators");
 const { deleteManyQuestion } = require("./Question");
 
+const MIN_TITlE = 5;
+const MIN_DESC = 20;
+const MIN_TAG = 5;
+
 const quizSchema = new Schema({
-  author: String,
-  title: String,
-  description: String,
-  tag: String,
+  author: {
+    type: String,
+    required: [true, "Author is required"],
+  },
+  title: {
+    type: String,
+    required: [true, "Title is required"],
+    validate: {
+      validator: (val) => val.length > MIN_TITlE,
+      message: `Title must be at least ${MIN_TITlE} characters long`,
+    },
+  },
+  description: {
+    type: String,
+    required: [true, "Description is required"],
+    validate: {
+      validator: (val) => val.length > MIN_DESC,
+      message: `Description must be at least ${MIN_DESC} characters long`,
+    },
+  },
+  tag: {
+    type: String,
+    required: [true, "Tag is required"],
+    validate: {
+      validator: (val) => val.length > MIN_TAG,
+      message: `Tag must be at least ${MIN_TAG} characters long`,
+    },
+  },
   userId: String,
 });
 
@@ -35,7 +63,8 @@ const findAll = async (queries) => {
 const update = async ({ title, description, tag }, quizId) => {
   const data = await Quiz.updateOne(
     { _id: quizId },
-    { title, description, tag }
+    { title, description, tag },
+    { runValidators: true }
   );
 
   return data;
@@ -48,31 +77,31 @@ const deleteQuiz = async (quizId = "") => {
   return data;
 };
 
-const isQuizInputValid = (quizData = {}) => {
-  const responseData = {};
+// const isQuizInputValid = (quizData = {}) => {
+//   const responseData = {};
 
-  for (let key in quizData) {
-    const data = quizData[key];
+//   for (let key in quizData) {
+//     const data = quizData[key];
 
-    switch (key) {
-      case "title":
-        responseData[key] = quizValidator.validateTitle(data);
-        break;
-      case "description":
-        responseData[key] = quizValidator.validateDescription(data);
-        break;
-      case "tag":
-        responseData[key] = quizValidator.validateTag(data);
-        break;
-      default:
-        throw new Error(
-          `${key.toUpperCase()} is not a valid input for quiz fields`
-        );
-    }
-  }
+//     switch (key) {
+//       case "title":
+//         responseData[key] = quizValidator.validateTitle(data);
+//         break;
+//       case "description":
+//         responseData[key] = quizValidator.validateDescription(data);
+//         break;
+//       case "tag":
+//         responseData[key] = quizValidator.validateTag(data);
+//         break;
+//       default:
+//         throw new Error(
+//           `${key.toUpperCase()} is not a valid input for quiz fields`
+//         );
+//     }
+//   }
 
-  return responseData;
-};
+//   return responseData;
+// };
 
 module.exports = {
   Quiz,
@@ -81,7 +110,7 @@ module.exports = {
   update,
   deleteQuiz,
   findById,
-  isQuizInputValid,
+  // isQuizInputValid
 };
 
 const createQueries = (queryObj) => {

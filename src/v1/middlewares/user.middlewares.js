@@ -8,9 +8,9 @@ const {
 } = require("../models/User");
 
 const USER_ROLE = {
-  QUIZZER: 1,
-  QUIZEE: 2,
-  BOTH: 3,
+  QUIZZER: "quizzer",
+  QUIZEE: "quizee",
+  BOTH: "public",
 };
 
 const validateUser = (req, res, next) => {

@@ -5,10 +5,7 @@ const {
   updateQuiz,
   removeQuiz,
 } = require("../controllers/quiz.controller");
-const {
-  validateQuiz,
-  checkQuizExistence,
-} = require("../middlewares/quiz.middlewares");
+const { checkQuizExistence } = require("../middlewares/quiz.middlewares");
 const {
   authorizeUser,
   validateRole,
@@ -17,22 +14,13 @@ const {
 
 const routes = express.Router();
 
-routes.post(
-  "/",
-  [authorizeUser, validateRole(USER_ROLE.QUIZZER), validateQuiz],
-  createQuiz
-);
+routes.post("/", [authorizeUser, validateRole(USER_ROLE.QUIZZER)], createQuiz);
 
 routes.get("/", [authorizeUser, validateRole()], findAllQuiz);
 
 routes.put(
   "/:quizId",
-  [
-    authorizeUser,
-    validateRole(USER_ROLE.QUIZZER),
-    checkQuizExistence,
-    validateQuiz,
-  ],
+  [authorizeUser, validateRole(USER_ROLE.QUIZZER), checkQuizExistence],
   updateQuiz
 );
 
