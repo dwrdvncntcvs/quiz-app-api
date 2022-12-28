@@ -1,9 +1,33 @@
 const { Schema, model } = require("mongoose");
 
+const MIN_QUES = 15;
+const MIN_OPT = 5;
+
 const questionSchema = new Schema({
-  quizId: String,
-  question: String,
-  options: [{ option: String, isCorrect: Boolean }],
+  quizId: {
+    type: String,
+  },
+  question: {
+    type: String,
+    required: [true, "Question is required"],
+    validate: {
+      validator: (val) => val.trim().length > MIN_QUES,
+      message: `Question must be at lease ${MIN_QUES} characters long`,
+    },
+  },
+  options: [
+    {
+      option: {
+        type: String,
+        require: [true, "Option is required"],
+        validate: {
+          validator: (val) => val.trim().length > MIN_OPT,
+          message: `Option must be at lease ${MIN_OPT} characters long`,
+        },
+      },
+      isCorrect: Boolean,
+    },
+  ],
 });
 
 const Question = model("Question", questionSchema);
