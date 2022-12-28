@@ -1,6 +1,26 @@
 # Quiz App API
 
-Quiz App is a mini project that is built with Javascript and ExpressJS. The database that I will be using on this project will be MongoDB.
+This is a project that I created for the Quiz App that I want to build with ReactJS. I could create a simple NextJS application but I think it is okay and good if I separated the backend to the frontend application.
+
+This application is build with _[NodeJs](https://nodejs.org/)_, _[ExpressJS](https://expressjs.com/)_ and _[Mongoose](https://mongoosejs.com/)_ to build the backend application with _[MongoDB](https://www.mongodb.com)_ as its database.
+
+The application was only tested using manual testing. I used Postman and MongoDB Compass during the development of this application to view the data as well as to test the API.
+
+## Usage
+
+This application requires two different roles for its users. The roles are **_Quizzer_** and **_Quizee_**. These roles has a big part in the application as they are the core uses of the application.
+
+### **_Quizzer_**
+
+- Can create quizzes and questionnaires.
+- Can delete their quizzes and questionnaires.
+- Can update quizzes
+- Can view all the quizzes
+
+### **_Quizee_**
+
+- Can take the quizzes
+- Can view all the quizzes
 
 ## Installation
 
@@ -30,3 +50,4 @@ This project is very simple to install in your local machine. Follow these instr
   yarn dev
   ```
 
+> **_Note:_** _This is only a side project. I don't know yet if this is already done or I will add some new functionalities when I integrated this with its frontend counter part._
