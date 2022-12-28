@@ -56,10 +56,24 @@ const deleteManyQuestion = async (quizId) => {
   return data;
 };
 
+const findByQuestionId = async (questionId) => {
+  const data = await Question.findOne({ _id: questionId });
+
+  return data;
+};
+
+const deleteOneQuestion = async (questionId) => {
+  const data = await Question.deleteOne({ _id: questionId });
+
+  return data;
+};
+
 module.exports = {
   Question,
   create,
   findByQuizId,
   getTotalItems,
   deleteManyQuestion,
+  findByQuestionId,
+  deleteOneQuestion,
 };

@@ -2,7 +2,11 @@ const express = require("express");
 const {
   createQuestions,
   getQuestionByQuizId,
+  deleteQuestion,
 } = require("../controllers/questions.controller");
+const {
+  checkQuestionExistence,
+} = require("../middlewares/question.middlewares");
 const { checkQuizExistence } = require("../middlewares/quiz.middlewares");
 const {
   authorizeUser,
@@ -19,5 +23,7 @@ routes.post(
 );
 
 routes.get("/:quizId", [checkQuizExistence], getQuestionByQuizId);
+
+routes.delete("/:questionId", [checkQuestionExistence], deleteQuestion);
 
 module.exports = routes;
