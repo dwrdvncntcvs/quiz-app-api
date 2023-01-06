@@ -102,7 +102,6 @@ const signOut = async (req, res, next) => {
 };
 
 const createNewRefreshToken = async (req, res) => {
-  const cookies = req.cookies;
   if (!req.cookies?.jwt) return res.status(403).send({ msg: "Forbidden" });
 
   const token = req.cookies.jwt;
