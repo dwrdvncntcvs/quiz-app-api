@@ -56,7 +56,6 @@ const authUser = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       sameSite: "None",
-      secure: true,
     });
 
     return res.status(200).send({ accessToken });
@@ -71,7 +70,7 @@ const signOut = async (req, res, next) => {
   const refreshToken = req.cookies?.jwt;
 
   if (!refreshToken) {
-    res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "None" });
     return res.status(200).send({ message: "Successfully signed out" });
   }
 
@@ -81,7 +80,6 @@ const signOut = async (req, res, next) => {
     if (!foundUser) {
       res.clearCookie("jwt", {
         httpOnly: true,
-        secure: true,
         sameSite: "None",
       });
       return res.status(200).send({ message: "Successfully signed out" });
@@ -90,7 +88,6 @@ const signOut = async (req, res, next) => {
     await updateUserRefreshToken(id);
     res.clearCookie("jwt", {
       httpOnly: true,
-      secure: true,
       sameSite: "None",
     });
 
