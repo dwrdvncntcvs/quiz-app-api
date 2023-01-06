@@ -1,6 +1,11 @@
-const { create, updateUserRefreshToken } = require("../models/User");
+const {
+  create,
+  updateUserRefreshToken,
+  findUserById,
+  findUserByRefreshToken,
+} = require("../models/User");
 
-const { sign } = require("jsonwebtoken");
+const { sign, decode, verify } = require("jsonwebtoken");
 const {
   ACCESS_SECRET_KEY,
   REFRESH_SECRET_KEY,
@@ -63,20 +68,70 @@ const authUser = async (req, res) => {
 
 const signOut = async (req, res, next) => {
   const { id } = req.auth_user;
+  const refreshToken = req.cookies?.jwt;
+
+  if (!refreshToken) {
+    res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
+    return res.status(200).send({ message: "Successfully signed out" });
+  }
 
   try {
-    await updateUserRefreshToken(id);
-    res.clearCookie("jwt");
+    const foundUser = await findUserByRefreshToken(refreshToken);
 
-    return res.status(200).send({ msg: "Successfully signed out" });
+    if (!foundUser) {
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+      return res.status(200).send({ message: "Successfully signed out" });
+    }
+
+    await updateUserRefreshToken(id);
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
+    return res.status(200).send({ message: "Successfully signed out" });
   } catch (err) {
     console.log(err.message);
-    return res.status(500).send({ msg: "Something went wrong" });
+    return res.status(500).send({ message: "Something went wrong" });
   }
+};
+
+const createNewRefreshToken = async (req, res) => {
+  const cookies = req.cookies;
+  if (!req.cookies?.jwt) return res.status(403).send({ msg: "Forbidden" });
+
+  const token = req.cookies.jwt;
+  const { id } = decode(token);
+
+  const foundUser = await findUserById(id);
+
+  if (!foundUser) return res.status(404).send({ message: "User not found" });
+
+  if (foundUser.refreshToken === "")
+    return res.status(403).send({ message: "Forbidden" });
+
+  verify(token, REFRESH_SECRET_KEY, (err, data) => {
+    if (err) return res.status(403).send({ message: "Invalid Credentials" });
+
+    const { id, username, name, role } = data;
+    const tokenData = { id, username, name, role };
+
+    const newAccessToken = sign(tokenData, ACCESS_SECRET_KEY, {
+      expiresIn: "24h",
+    });
+
+    return res.status(200).send({ accessToken: newAccessToken });
+  });
 };
 
 module.exports = {
   createUser,
   authUser,
   signOut,
+  createNewRefreshToken,
 };

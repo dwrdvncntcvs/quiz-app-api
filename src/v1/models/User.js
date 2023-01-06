@@ -85,6 +85,12 @@ const updateUserRefreshToken = async (userId, refreshToken = "") => {
   await User.findByIdAndUpdate(userId, { refreshToken });
 };
 
+const findUserByRefreshToken = async (refreshToken) => {
+  const userData = await User.findOne({ refreshToken });
+
+  return userData;
+};
+
 module.exports = {
   User,
   create,
@@ -92,4 +98,5 @@ module.exports = {
   comparePassword,
   findUserById,
   updateUserRefreshToken,
+  findUserByRefreshToken,
 };
