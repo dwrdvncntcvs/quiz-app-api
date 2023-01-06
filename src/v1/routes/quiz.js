@@ -18,7 +18,7 @@ routes.post("/", [authorizeUser, validateRole(USER_ROLE.QUIZZER)], createQuiz);
 
 routes.get(
   "/",
-  // [authorizeUser, validateRole()],
+  [authorizeUser, validateRole()],
   findAllQuiz
 );
 

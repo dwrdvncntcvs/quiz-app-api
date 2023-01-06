@@ -55,10 +55,10 @@ const authUser = async (req, res) => {
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "None",
+      // sameSite: "None",
     });
 
-    return res.status(200).send({ accessToken });
+    return res.status(200).send({ accessToken, user: req.user });
   } catch (err) {
     console.log("Error: ", err);
     return res.status(500).send({ msg: "Something went wrong" });
@@ -70,7 +70,10 @@ const signOut = async (req, res, next) => {
   const refreshToken = req.cookies?.jwt;
 
   if (!refreshToken) {
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "None" });
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      // sameSite: "None"
+    });
     return res.status(200).send({ message: "Successfully signed out" });
   }
 
@@ -80,7 +83,7 @@ const signOut = async (req, res, next) => {
     if (!foundUser) {
       res.clearCookie("jwt", {
         httpOnly: true,
-        sameSite: "None",
+        // sameSite: "None",
       });
       return res.status(200).send({ message: "Successfully signed out" });
     }
@@ -88,7 +91,7 @@ const signOut = async (req, res, next) => {
     await updateUserRefreshToken(id);
     res.clearCookie("jwt", {
       httpOnly: true,
-      sameSite: "None",
+      // sameSite: "None",
     });
 
     return res.status(200).send({ message: "Successfully signed out" });
@@ -111,17 +114,19 @@ const createNewRefreshToken = async (req, res) => {
   if (foundUser.refreshToken === "")
     return res.status(403).send({ message: "Forbidden" });
 
-  verify(token, REFRESH_SECRET_KEY, (err, data) => {
+  verify(token, REFRESH_SECRET_KEY, async (err, data) => {
     if (err) return res.status(403).send({ message: "Invalid Credentials" });
 
     const { id, username, name, role } = data;
     const tokenData = { id, username, name, role };
 
+    const user = await findUserById(id);
+
     const newAccessToken = sign(tokenData, ACCESS_SECRET_KEY, {
       expiresIn: "24h",
     });
 
-    return res.status(200).send({ accessToken: newAccessToken });
+    return res.status(200).send({ accessToken: newAccessToken, user });
   });
 };
 

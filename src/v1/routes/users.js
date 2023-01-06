@@ -18,6 +18,6 @@ routes.post("/auth", [validateAuth], authUser);
 
 routes.get("/sign-out", [authorizeUser], signOut);
 
-routes.get("/refresh-token", [authorizeUser], createNewRefreshToken);
+routes.get("/refresh-token", createNewRefreshToken);
 
 module.exports = routes;
