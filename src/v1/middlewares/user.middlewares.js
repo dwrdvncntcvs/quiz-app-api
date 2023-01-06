@@ -1,6 +1,6 @@
 const { verify } = require("jsonwebtoken");
 const { isValidObjectId } = require("mongoose");
-const { SECRET_KEY } = require("../../utils/variables");
+const { ACCESS_SECRET_KEY } = require("../../utils/variables");
 const {
   comparePassword,
   findUserByUsername,
@@ -50,7 +50,7 @@ const authorizeUser = async (req, res, next) => {
   if (!authorization) return res.status(403).send({ msg: "Sign in first" });
 
   const token = authorization.replace("Bearer ", "");
-  verify(token, SECRET_KEY, async (err, data) => {
+  verify(token, ACCESS_SECRET_KEY, async (err, data) => {
     if (err) return res.status(err).send({ msg: "Sign in first" });
 
     const { id } = data;

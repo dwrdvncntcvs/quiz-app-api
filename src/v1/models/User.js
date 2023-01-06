@@ -81,7 +81,7 @@ const hashPassword = async (password) => {
   return hashedPassword;
 };
 
-const updateUserRefreshToken = async (userId, refreshToken) => {
+const updateUserRefreshToken = async (userId, refreshToken = "") => {
   await User.findByIdAndUpdate(userId, { refreshToken });
 };
 

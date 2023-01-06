@@ -1,7 +1,10 @@
 const { create, updateUserRefreshToken } = require("../models/User");
 
 const { sign } = require("jsonwebtoken");
-const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = require("../../utils/variables");
+const {
+  ACCESS_SECRET_KEY,
+  REFRESH_SECRET_KEY,
+} = require("../../utils/variables");
 const { handleValidationError } = require("../../utils/mongoDbExtra");
 
 const createUser = async (req, res, next) => {
@@ -58,7 +61,22 @@ const authUser = async (req, res) => {
   }
 };
 
+const signOut = async (req, res, next) => {
+  const { id } = req.auth_user;
+
+  try {
+    await updateUserRefreshToken(id);
+    res.clearCookie("jwt");
+
+    return res.status(200).send({ msg: "Successfully signed out" });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send({ msg: "Something went wrong" });
+  }
+};
+
 module.exports = {
   createUser,
   authUser,
+  signOut,
 };
