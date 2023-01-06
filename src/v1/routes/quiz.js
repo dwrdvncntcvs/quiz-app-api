@@ -16,7 +16,11 @@ const routes = express.Router();
 
 routes.post("/", [authorizeUser, validateRole(USER_ROLE.QUIZZER)], createQuiz);
 
-routes.get("/", [authorizeUser, validateRole()], findAllQuiz);
+routes.get(
+  "/",
+  // [authorizeUser, validateRole()],
+  findAllQuiz
+);
 
 routes.put(
   "/:quizId",

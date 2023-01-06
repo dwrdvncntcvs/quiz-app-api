@@ -36,6 +36,9 @@ const userSchema = new Schema({
       message: `Role "{VALUE}" is not supported`,
     },
   },
+  refreshToken: {
+    type: String,
+  },
   createdAt: String,
 });
 
@@ -53,7 +56,8 @@ userSchema.post("find", async function (data) {
 const User = model("User", userSchema);
 
 const create = async (userData) => {
-  return await User.create(userData);
+  const userDataWithToken = { ...userData, refreshToken: "" };
+  return await User.create(userDataWithToken);
 };
 
 const findUserByUsername = async (username) => {
@@ -77,10 +81,15 @@ const hashPassword = async (password) => {
   return hashedPassword;
 };
 
+const updateUserRefreshToken = async (userId, refreshToken) => {
+  await User.findByIdAndUpdate(userId, { refreshToken });
+};
+
 module.exports = {
   User,
   create,
   findUserByUsername,
   comparePassword,
   findUserById,
+  updateUserRefreshToken,
 };

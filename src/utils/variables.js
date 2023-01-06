@@ -1,5 +1,6 @@
 require("dotenv").config();
 
 module.exports = {
-  SECRET_KEY: process.env.JWT_KEY,
+  ACCESS_SECRET_KEY: process.env.ACCESS_KEY,
+  REFRESH_SECRET_KEY: process.env.REFRESH_KEY,
 };

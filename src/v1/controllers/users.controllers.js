@@ -1,7 +1,7 @@
-const { create } = require("../models/User");
+const { create, updateUserRefreshToken } = require("../models/User");
 
 const { sign } = require("jsonwebtoken");
-const { SECRET_KEY } = require("../../utils/variables");
+const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = require("../../utils/variables");
 const { handleValidationError } = require("../../utils/mongoDbExtra");
 
 const createUser = async (req, res, next) => {
@@ -29,16 +29,33 @@ const createUser = async (req, res, next) => {
 const authUser = async (req, res) => {
   const { id, username, first_name, last_name, role } = req.user;
 
-  const payload = {
-    id,
-    username,
-    name: `${first_name} ${last_name}`,
-    role,
-  };
+  try {
+    const payload = {
+      id,
+      username,
+      name: `${first_name} ${last_name}`,
+      role,
+    };
 
-  const token = sign(payload, SECRET_KEY);
+    const accessToken = sign(payload, ACCESS_SECRET_KEY, { expiresIn: "24h" });
+    const refreshToken = sign(payload, REFRESH_SECRET_KEY, {
+      expiresIn: "365d",
+    });
 
-  return res.status(200).send({ token });
+    await updateUserRefreshToken(id, refreshToken);
+
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "None",
+      secure: true,
+    });
+
+    return res.status(200).send({ accessToken });
+  } catch (err) {
+    console.log("Error: ", err);
+    return res.status(500).send({ msg: "Something went wrong" });
+  }
 };
 
 module.exports = {
