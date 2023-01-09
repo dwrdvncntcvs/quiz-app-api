@@ -130,9 +130,18 @@ const createNewRefreshToken = async (req, res) => {
   });
 };
 
+const getUser = async (req, res, next) => {
+  const auth_user = { ...req.auth_user };
+  const user = auth_user._doc;
+  delete user.password;
+
+  return res.status(200).send(user);
+};
+
 module.exports = {
   createUser,
   authUser,
   signOut,
   createNewRefreshToken,
+  getUser,
 };

@@ -4,6 +4,7 @@ const {
   authUser,
   signOut,
   createNewRefreshToken,
+  getUser,
 } = require("../controllers/users.controllers");
 const {
   validateAuth,
@@ -19,5 +20,7 @@ routes.post("/auth", [validateAuth], authUser);
 routes.post("/sign-out", [authorizeUser], signOut);
 
 routes.get("/refresh-token", createNewRefreshToken);
+
+routes.get("/", [authorizeUser], getUser);
 
 module.exports = routes;
