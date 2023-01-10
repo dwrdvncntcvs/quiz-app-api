@@ -35,13 +35,23 @@ const quizSchema = new Schema({
       message: `Tag must be at least ${MIN_TAG} characters long`,
     },
   },
+  totalItems: {
+    type: String,
+  },
   userId: String,
 });
 
 const Quiz = model("Quiz", quizSchema);
 
 const create = async ({ author, title, description, tag, userId }) => {
-  const data = await Quiz.create({ author, title, description, tag, userId });
+  const data = await Quiz.create({
+    author,
+    title,
+    description,
+    tag,
+    userId,
+    totalItems: 0,
+  });
 
   return data;
 };
