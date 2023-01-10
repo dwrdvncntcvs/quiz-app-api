@@ -51,7 +51,7 @@ const authorizeUser = async (req, res, next) => {
 
   const token = authorization.replace("Bearer ", "");
   verify(token, ACCESS_SECRET_KEY, async (err, data) => {
-    if (err) return res.status(err).send({ msg: "Sign in first" });
+    if (err) return res.status(403).send({ msg: "Sign in first" });
 
     const { id } = data;
     const userData = await findUserById(id);

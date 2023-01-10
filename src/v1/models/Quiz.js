@@ -36,6 +36,7 @@ const quizSchema = new Schema({
     },
   },
   totalItems: Number,
+  userId: String,
 });
 
 const Quiz = model("Quiz", quizSchema);
