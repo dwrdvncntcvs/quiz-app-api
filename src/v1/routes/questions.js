@@ -24,6 +24,10 @@ routes.post(
 
 routes.get("/:quizId", [checkQuizExistence], getQuestionByQuizId);
 
-routes.delete("/:questionId", [checkQuestionExistence], deleteQuestion);
+routes.delete(
+  "/:questionId",
+  [authorizeUser, validateRole(USER_ROLE.QUIZZER), checkQuestionExistence],
+  deleteQuestion
+);
 
 module.exports = routes;

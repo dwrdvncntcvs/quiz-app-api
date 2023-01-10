@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const { updateQuizTotalItems } = require("./Quiz");
 
 const MIN_QUES = 15;
 const MIN_OPT = 5;
@@ -68,6 +69,12 @@ const deleteOneQuestion = async (questionId) => {
   return data;
 };
 
+const getQuestionCountByQuizId = async (quizId) => {
+  const data = await Question.count({ quizId });
+
+  return data;
+};
+
 module.exports = {
   Question,
   create,
@@ -76,4 +83,5 @@ module.exports = {
   deleteManyQuestion,
   findByQuestionId,
   deleteOneQuestion,
+  getQuestionCountByQuizId,
 };

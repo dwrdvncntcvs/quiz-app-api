@@ -12,6 +12,7 @@ const checkQuestionExistence = async (req, res, next) => {
   if (!foundQuestion)
     return res.status(404).send({ message: "Question not found" });
 
+  req.foundQuestion = foundQuestion;
   next();
 };
 

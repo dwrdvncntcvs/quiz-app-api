@@ -36,7 +36,7 @@ const createQuiz = async (req, res, next) => {
 };
 
 const findAllQuiz = async (req, res, next) => {
-  const query = { ...req.query, totalItems: { $gt: 0 } };
+  const query = { ...req.query };
 
   try {
     const data = await findAll(query);

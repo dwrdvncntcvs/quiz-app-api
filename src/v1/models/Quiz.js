@@ -35,10 +35,7 @@ const quizSchema = new Schema({
       message: `Tag must be at least ${MIN_TAG} characters long`,
     },
   },
-  totalItems: {
-    type: String,
-  },
-  userId: String,
+  totalItems: Number,
 });
 
 const Quiz = model("Quiz", quizSchema);
@@ -93,6 +90,24 @@ const findQuizzesByUserId = async (userId) => {
   return data;
 };
 
+const updateQuizTotalItems = async (totalItems, quizId) => {
+  const data = await Quiz.updateOne(
+    { _id: quizId },
+    { totalItems },
+    { runValidators: true }
+  );
+
+  return data;
+};
+
+const findQuizById = async (quizId) => {
+  const data = await Quiz.findById(quizId);
+
+  console.log("Quiz Data: ", data);
+
+  return data;
+};
+
 module.exports = {
   Quiz,
   create,
@@ -101,4 +116,6 @@ module.exports = {
   deleteQuiz,
   findById,
   findQuizzesByUserId,
+  updateQuizTotalItems,
+  findQuizById,
 };
