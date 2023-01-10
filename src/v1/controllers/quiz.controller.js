@@ -95,10 +95,17 @@ const getUserQuizzes = async (req, res, next) => {
   }
 };
 
+const getQuiz = (req, res) => {
+  const quiz = req.quizData;
+
+  return res.status(200).send(quiz);
+};
+
 module.exports = {
   createQuiz,
   findAllQuiz,
   updateQuiz,
   removeQuiz,
   getUserQuizzes,
+  getQuiz,
 };

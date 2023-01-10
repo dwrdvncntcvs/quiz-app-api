@@ -5,6 +5,7 @@ const {
   updateQuiz,
   removeQuiz,
   getUserQuizzes,
+  getQuiz,
 } = require("../controllers/quiz.controller");
 const { checkQuizExistence } = require("../middlewares/quiz.middlewares");
 const {
@@ -24,6 +25,8 @@ routes.get(
 );
 
 routes.get("/:userId", [authorizeUser], getUserQuizzes);
+
+routes.get("/quiz/:quizId", [checkQuizExistence], getQuiz);
 
 routes.put(
   "/:quizId",
