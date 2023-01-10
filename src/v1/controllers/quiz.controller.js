@@ -1,5 +1,11 @@
 const { handleValidationError } = require("../../utils/mongoDbExtra");
-const { create, findAll, update, deleteQuiz } = require("../models/Quiz");
+const {
+  create,
+  findAll,
+  update,
+  deleteQuiz,
+  findQuizzesByUserId,
+} = require("../models/Quiz");
 
 const createQuiz = async (req, res, next) => {
   const user = req.auth_user;
@@ -75,9 +81,24 @@ const removeQuiz = async (req, res, next) => {
   }
 };
 
+const getUserQuizzes = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const data = await findQuizzesByUserId(userId);
+    console.log(data);
+
+    return res.status(200).send(data);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 module.exports = {
   createQuiz,
   findAllQuiz,
   updateQuiz,
   removeQuiz,
+  getUserQuizzes,
 };

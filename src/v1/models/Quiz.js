@@ -77,6 +77,12 @@ const deleteQuiz = async (quizId = "") => {
   return data;
 };
 
+const findQuizzesByUserId = async (userId) => {
+  const data = await Quiz.find({ userId });
+  console.log("Quizzes: ", data);
+  return data;
+};
+
 module.exports = {
   Quiz,
   create,
@@ -84,4 +90,5 @@ module.exports = {
   update,
   deleteQuiz,
   findById,
+  findQuizzesByUserId,
 };
