@@ -4,6 +4,7 @@ const {
   findByQuizId,
   deleteOneQuestion,
   getQuestionCountByQuizId,
+  updateQuestionById,
 } = require("../models/Question");
 const { updateQuizTotalItems, findQuizById } = require("../models/Quiz");
 
@@ -53,8 +54,23 @@ const deleteQuestion = async (req, res) => {
   return res.status(200).send(data);
 };
 
+const updateQuestion = async (req, res) => {
+  const { question, options } = req.body;
+  const { questionId } = req.params;
+
+  try {
+    const data = await updateQuestionById(questionId, { question, options });
+
+    return res.status(201).send(data);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: err.message });
+  }
+};
+
 module.exports = {
   createQuestions,
   getQuestionByQuizId,
   deleteQuestion,
+  updateQuestion,
 };

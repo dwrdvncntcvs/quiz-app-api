@@ -75,6 +75,16 @@ const getQuestionCountByQuizId = async (quizId) => {
   return data;
 };
 
+const updateQuestionById = async (questionId, { question, options }) => {
+  const data = await Question.updateOne(
+    { _id: questionId },
+    { question, options },
+    { runValidators: true }
+  );
+
+  return data;
+};
+
 module.exports = {
   Question,
   create,
@@ -84,4 +94,5 @@ module.exports = {
   findByQuestionId,
   deleteOneQuestion,
   getQuestionCountByQuizId,
+  updateQuestionById,
 };

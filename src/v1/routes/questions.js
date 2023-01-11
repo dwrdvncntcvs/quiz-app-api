@@ -3,6 +3,7 @@ const {
   createQuestions,
   getQuestionByQuizId,
   deleteQuestion,
+  updateQuestion,
 } = require("../controllers/questions.controller");
 const {
   checkQuestionExistence,
@@ -23,6 +24,12 @@ routes.post(
 );
 
 routes.get("/:quizId", [checkQuizExistence], getQuestionByQuizId);
+
+routes.put(
+  "/:questionId",
+  [authorizeUser, validateRole(USER_ROLE.QUIZZER), checkQuestionExistence],
+  updateQuestion
+);
 
 routes.delete(
   "/:questionId",
