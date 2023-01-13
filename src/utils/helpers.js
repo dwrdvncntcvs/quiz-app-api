@@ -3,6 +3,7 @@ function removeExtraDetails(model) {
   m.id = m._id.toJSON();
   delete m._id;
   delete m.__v;
+  console.log(m);
   return m;
 }
 

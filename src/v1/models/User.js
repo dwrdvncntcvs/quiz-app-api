@@ -62,7 +62,7 @@ const create = async (userData) => {
 
 const findUserByUsername = async (username) => {
   const data = await User.findOne({ username });
-  return data ? removeExtraDetails(data) : null;
+  return !!data ? data : null;
 };
 
 const findUserById = async (id) => {

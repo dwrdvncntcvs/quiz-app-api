@@ -12,6 +12,7 @@ const {
   authorizeUser,
   validateRole,
   USER_ROLE,
+  checkUserExistence,
 } = require("../middlewares/user.middlewares");
 
 const routes = express.Router();
@@ -24,7 +25,7 @@ routes.get(
   findAllQuiz
 );
 
-routes.get("/:userId", [authorizeUser], getUserQuizzes);
+routes.get("/:userId", [authorizeUser, checkUserExistence], getUserQuizzes);
 
 routes.get("/quiz/:quizId", [checkQuizExistence], getQuiz);
 

@@ -83,10 +83,8 @@ const removeQuiz = async (req, res, next) => {
 
 const getUserQuizzes = async (req, res, next) => {
   const { userId } = req.params;
-
   try {
     const data = await findQuizzesByUserId(userId);
-    console.log(data);
 
     return res.status(200).send(data);
   } catch (err) {
