@@ -6,9 +6,7 @@ const quizResultSchema = new Schema({
   totalItems: Number,
   percentage: Number,
   date: Date,
-  quizTitle: String,
   userId: String,
-  quizee: String,
 });
 
 const QuizResult = model("QuizResult", quizResultSchema);
@@ -18,10 +16,8 @@ const create = async ({
   score,
   totalItems,
   date,
-  quizTitle,
   percentage,
   userId,
-  name,
 }) => {
   const data = await QuizResult.create({
     quizId,
@@ -29,9 +25,7 @@ const create = async ({
     totalItems,
     date,
     percentage,
-    quizTitle,
     userId,
-    quizee: name,
   });
 
   return data;
@@ -43,4 +37,22 @@ const findAllByUserId = async (userId) => {
   return data;
 };
 
-module.exports = { QuizResult, create, findAllByUserId };
+const findAllByQuizId = async (quizId) => {
+  const data = await QuizResult.find({ quizId });
+
+  return data;
+};
+
+const findByQuizResultId = async (quizResultId) => {
+  const data = await QuizResult.findOne({ _id: quizResultId });
+
+  return data;
+};
+
+module.exports = {
+  QuizResult,
+  create,
+  findAllByUserId,
+  findAllByQuizId,
+  findByQuizResultId,
+};

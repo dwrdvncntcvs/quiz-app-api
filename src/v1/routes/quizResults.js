@@ -2,6 +2,7 @@ const express = require("express");
 const {
   createQuizResult,
   getAllUserQuizResults,
+  getQuizResult,
 } = require("../controllers/quizResults.controller");
 const { checkQuizExistence } = require("../middlewares/quiz.middlewares");
 const {
@@ -19,6 +20,12 @@ routes.post(
   createQuizResult
 );
 
-routes.get("/:userId", [checkUserExistence], getAllUserQuizResults);
+routes.get(
+  "/quiz/:quizResultId",
+  [authorizeUser, validateRole(USER_ROLE.QUIZEE)],
+  getQuizResult
+);
+
+routes.get("/user/:userId", [checkUserExistence], getAllUserQuizResults);
 
 module.exports = routes;
