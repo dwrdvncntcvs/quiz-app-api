@@ -1,6 +1,5 @@
 const { hash, genSalt, compare } = require("bcrypt");
 const { Schema, model } = require("mongoose");
-const { removeExtraDetails } = require("../../utils/helpers");
 
 const userSchema = new Schema({
   first_name: {
