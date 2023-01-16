@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 const { updateQuizTotalItems } = require("./Quiz");
 
 const MIN_QUES = 15;
-const MIN_OPT = 5;
+const MIN_OPT = 1;
 
 const questionSchema = new Schema({
   quizId: {
