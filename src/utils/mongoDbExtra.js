@@ -22,4 +22,13 @@ const createQueries = (queryObj) => {
   return { ...newQuery, totalItems: { $gt: 4 } };
 };
 
-module.exports = { handleValidationError, createQueries };
+const extractQuizIdSet = (queryArr) => {
+  if (queryArr.length === 0) return queryArr;
+
+  const data = queryArr.map(({ quizId }) => quizId);
+
+  const dataSet = new Set(data);
+  return dataSet;
+};
+
+module.exports = { handleValidationError, createQueries, extractQuizIdSet };

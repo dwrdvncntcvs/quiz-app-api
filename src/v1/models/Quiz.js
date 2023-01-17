@@ -104,8 +104,6 @@ const updateQuizTotalItems = async (totalItems, quizId) => {
 const findQuizById = async (quizId) => {
   const data = await Quiz.findById(quizId);
 
-  console.log("Quiz Data: ", data);
-
   return data;
 };
 

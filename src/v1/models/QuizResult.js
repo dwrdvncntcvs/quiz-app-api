@@ -49,10 +49,24 @@ const findByQuizResultId = async (quizResultId) => {
   return data;
 };
 
+const findAllQuizResultsByUserId = async (userId) => {
+  const data = await QuizResult.find({ userId });
+
+  return data;
+};
+
+const findUserResultByQuizId = async ({ quizId, userId }) => {
+  const data = await QuizResult.count({ quizId, userId });
+
+  return data;
+};
+
 module.exports = {
   QuizResult,
   create,
   findAllByUserId,
   findAllByQuizId,
   findByQuizResultId,
+  findAllQuizResultsByUserId,
+  findUserResultByQuizId,
 };

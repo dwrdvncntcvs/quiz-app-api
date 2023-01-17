@@ -67,7 +67,7 @@ const authUser = async (req, res) => {
 };
 
 const signOut = async (req, res, next) => {
-  const { id } = req.auth_user;
+  const { _id } = req.auth_user;
   const refreshToken = req.cookies?.jwt;
 
   if (!refreshToken) {
@@ -89,7 +89,7 @@ const signOut = async (req, res, next) => {
       return res.status(200).send({ message: "Successfully signed out" });
     }
 
-    await updateUserRefreshToken(id);
+    await updateUserRefreshToken(_id);
     res.clearCookie("jwt", {
       httpOnly: true,
       // sameSite: "None",

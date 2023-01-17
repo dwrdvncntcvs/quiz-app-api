@@ -5,9 +5,12 @@ const {
   findAllByUserId,
   findAllByQuizId,
   findByQuizResultId,
+  findAllQuizResultsByUserId,
+  findUserResultByQuizId,
 } = require("../models/QuizResult");
 const { findUserById } = require("../models/User");
 const { findQuizById } = require("../models/Quiz");
+const { extractQuizIdSet } = require("../../utils/mongoDbExtra");
 
 const createQuizResult = async (req, res) => {
   const { score } = req.body;
@@ -64,8 +67,36 @@ const getQuizResult = async (req, res) => {
   }
 };
 
+const getAllTakenQuizzes = async (req, res) => {
+  const user = req.auth_user;
+
+  try {
+    const data = await findAllQuizResultsByUserId(user._id);
+    const quizIdSet = extractQuizIdSet(data);
+    const quizzesData = [];
+
+    for (let quizId of quizIdSet) {
+      const data = await findQuizById(quizId);
+      const attempts = await findUserResultByQuizId({
+        quizId,
+        userId: user._id,
+      });
+      const quizData = {
+        ...data._doc,
+        attempts,
+      };
+      quizzesData.push(quizData);
+    }
+
+    return res.status(200).send(quizzesData);
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+};
+
 module.exports = {
   createQuizResult,
   getAllUserQuizResults,
   getQuizResult,
+  getAllTakenQuizzes,
 };
