@@ -90,6 +90,12 @@ const findUserByRefreshToken = async (refreshToken) => {
   return userData;
 };
 
+const deleteUserById = async (userId) => {
+  const user = await User.deleteOne({ _id: userId });
+
+  return user;
+};
+
 module.exports = {
   User,
   create,
@@ -98,4 +104,5 @@ module.exports = {
   findUserById,
   updateUserRefreshToken,
   findUserByRefreshToken,
+  deleteUserById,
 };

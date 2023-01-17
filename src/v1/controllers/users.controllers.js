@@ -3,6 +3,7 @@ const {
   updateUserRefreshToken,
   findUserById,
   findUserByRefreshToken,
+  deleteUserById,
 } = require("../models/User");
 
 const { sign, decode, verify } = require("jsonwebtoken");
@@ -138,10 +139,26 @@ const getUser = async (req, res, next) => {
   return res.status(200).send(user);
 };
 
+const deleteUser = async (req, res, next) => {
+  const { _id } = req.auth_user;
+
+  try {
+    const data = await deleteUserById(_id);
+
+    return res
+      .status(200)
+      .send({ message: "User Successfully Deleted", meta: data });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: err.message });
+  }
+};
+
 module.exports = {
   createUser,
   authUser,
   signOut,
   createNewRefreshToken,
   getUser,
+  deleteUser,
 };
