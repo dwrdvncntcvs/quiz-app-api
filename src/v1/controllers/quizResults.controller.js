@@ -69,9 +69,13 @@ const getQuizResult = async (req, res) => {
 
 const getAllTakenQuizzes = async (req, res) => {
   const user = req.auth_user;
+  const { userId } = req.params;
+
+  if (user._id.valueOf() !== userId)
+    return res.status(403).send({ message: "Access Denied" });
 
   try {
-    const data = await findAllQuizResultsByUserId(user._id);
+    const data = await findAllQuizResultsByUserId(userId);
     const quizIdSet = extractQuizIdSet(data);
     const quizzesData = [];
 
@@ -87,6 +91,8 @@ const getAllTakenQuizzes = async (req, res) => {
       };
       quizzesData.push(quizData);
     }
+
+    console.log("Quiz Data: ");
 
     return res.status(200).send(quizzesData);
   } catch (err) {

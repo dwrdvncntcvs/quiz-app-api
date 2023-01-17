@@ -30,7 +30,7 @@ routes.get(
 routes.get("/user/:userId", [checkUserExistence], getAllUserQuizResults);
 
 routes.get(
-  "/quiz-taken",
+  "/quiz-taken/:userId",
   [authorizeUser, validateRole(USER_ROLE.QUIZEE)],
   getAllTakenQuizzes
 );
