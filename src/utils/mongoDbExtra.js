@@ -19,7 +19,7 @@ const createQueries = (queryObj) => {
     newQuery[key] = reg;
   }
 
-  return { ...newQuery, totalItems: { $gt: 0 } };
+  return { ...newQuery, totalItems: { $gt: 4 } };
 };
 
 module.exports = { handleValidationError, createQueries };
