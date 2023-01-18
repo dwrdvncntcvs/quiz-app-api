@@ -6,7 +6,8 @@ const {
   findAllByQuizId,
   findByQuizResultId,
   findAllQuizResultsByUserId,
-  findUserResultByQuizId,
+  countUserResultByQuizId,
+  findUserResultsByQuizId,
 } = require("../models/QuizResult");
 const { findUserById } = require("../models/User");
 const { findQuizById } = require("../models/Quiz");
@@ -81,7 +82,7 @@ const getAllTakenQuizzes = async (req, res) => {
 
     for (let quizId of quizIdSet) {
       const data = await findQuizById(quizId);
-      const attempts = await findUserResultByQuizId({
+      const attempts = await countUserResultByQuizId({
         quizId,
         userId: user._id,
       });
@@ -100,9 +101,30 @@ const getAllTakenQuizzes = async (req, res) => {
   }
 };
 
+const getAllResultsPerQuiz = async (req, res) => {
+  const { quizId, userId } = req.params;
+  const quizData = req.quizData;
+
+  try {
+    const quizResultsData = await findUserResultsByQuizId({ quizId, userId });
+
+    const resultData = {
+      quiz: {
+        title: quizData.title,
+      },
+      quizResultsData,
+    };
+
+    return res.status(200).send(resultData);
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+};
+
 module.exports = {
   createQuizResult,
   getAllUserQuizResults,
   getQuizResult,
   getAllTakenQuizzes,
+  getAllResultsPerQuiz,
 };

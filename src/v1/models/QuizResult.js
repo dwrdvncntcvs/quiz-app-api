@@ -55,8 +55,14 @@ const findAllQuizResultsByUserId = async (userId) => {
   return data;
 };
 
-const findUserResultByQuizId = async ({ quizId, userId }) => {
+const countUserResultByQuizId = async ({ quizId, userId }) => {
   const data = await QuizResult.count({ quizId, userId });
+
+  return data;
+};
+
+const findUserResultsByQuizId = async ({ quizId, userId }) => {
+  const data = await QuizResult.find({ quizId, userId });
 
   return data;
 };
@@ -68,5 +74,6 @@ module.exports = {
   findAllByQuizId,
   findByQuizResultId,
   findAllQuizResultsByUserId,
-  findUserResultByQuizId,
+  countUserResultByQuizId,
+  findUserResultsByQuizId,
 };

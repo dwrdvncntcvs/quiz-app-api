@@ -4,6 +4,7 @@ const {
   getAllUserQuizResults,
   getQuizResult,
   getAllTakenQuizzes,
+  getAllResultsPerQuiz,
 } = require("../controllers/quizResults.controller");
 const { checkQuizExistence } = require("../middlewares/quiz.middlewares");
 const {
@@ -34,5 +35,12 @@ routes.get(
   [authorizeUser, validateRole(USER_ROLE.QUIZEE)],
   getAllTakenQuizzes
 );
+
+routes.get("/:quizId/user/:userId", [
+  authorizeUser,
+  validateRole(USER_ROLE.QUIZEE),
+  checkQuizExistence,
+  getAllResultsPerQuiz,
+]);
 
 module.exports = routes;
